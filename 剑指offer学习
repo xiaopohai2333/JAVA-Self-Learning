@@ -33,3 +33,52 @@ class CQueue {
     }
        
 }
+
+二、剑指 Offer 30. 包含min函数的栈
+
+coding:
+class MinStack {
+
+    /** initialize your data structure here. */
+    //考虑到min()方法要求时间复杂度为O（1），使用辅助栈存储，同样使用LinkedList
+    LinkedList<Integer> A,B;
+    public MinStack() {
+        A=new LinkedList<>();
+        B=new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        A.add(x);//在主栈末尾添加
+        /*if(!B.isEmpty()){
+            if(B.getFirst()>=x) B.addFirst(x);
+        }
+        */
+        if(B.isEmpty()||B.getFirst()>=x) B.addFirst(x);
+        
+    }
+    
+    public void pop() {
+        if(A.removeLast().equals(B.peek())) B.removeFirst();
+
+    }
+    
+    public int top() {//top实际上是查看栈顶的元素，并没有删除元素，注意理解题目
+        return A.getLast();
+
+
+    }
+    
+    public int min() {//min实际也没有删除元素
+        return B.getFirst();
+
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.min();
+ */
