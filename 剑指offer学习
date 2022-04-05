@@ -82,3 +82,44 @@ class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.min();
  */
+ 
+ 三、1.两数字和
+ 
+ coding:
+ 
+ class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        //对数组排序
+        Arrays.sort(nums);
+        int [] res=new int[2];
+        //双指针
+        int left=0;
+        int right=nums.length-1;
+        while(left<right){
+            if(nums[left]+nums[right]>target) right--;
+            else if(nums[left]+nums[right]<target) left++;
+            else {
+                res[0]=left;
+                res[1]=right;
+            }
+        }
+        return res;
+    }
+}
+
+上述方法显示超时
+
+method 2:
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        //利用HashMap存储数据
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(target-nums[i])) return new int[] {map.get(target-nums[i]),i};
+            map.put(nums[i],i);
+        }
+        return new int [2];
+    }
+}
+
