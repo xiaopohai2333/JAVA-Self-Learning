@@ -1,0 +1,35 @@
+一、剑指 Offer 09. 用两个栈实现队列
+
+coding:
+class CQueue {
+    //利用linkedList充当栈
+    LinkedList<Integer> A,B;
+    public CQueue() {
+        A=new LinkedList<Integer>();
+        B=new LinkedList<Integer>();
+        //new 对象构造A,B两个实例，A为主栈，B为辅助栈           
+    }
+    
+    public void appendTail(int value) {
+        A.add(value);//直接在主栈尾部插入元素实现队列尾部插入整数
+
+    }
+    
+    public int deleteHead() {
+        //当辅助栈还有整数时，删除辅助栈的数
+        //当辅助栈没有了，需要将A的首位转移到B的末尾
+        //当主栈没有了，所以队列没有元素了，返回-1
+        if(!B.isEmpty()){
+            return B.removeLast();
+        }
+        if(A.isEmpty()){
+            return -1;
+        }
+        if(!A.isEmpty()){
+            B.add(A.poll());
+        }
+        return B.removeFirst();
+        
+    }
+       
+}
