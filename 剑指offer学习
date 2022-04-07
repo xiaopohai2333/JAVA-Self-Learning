@@ -196,4 +196,58 @@ class Solution {
     }
 }
 
+六、剑指offer 35复杂链表的复制
 
+coding:
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head==null) return null;//排除特殊情况
+        Map<Node,Node> map=new HashMap<Node,Node>();
+        Node cur=head;
+        while(cur!=null){
+            map.put(cur,new Node(cur.val));//建立新旧链表映射
+            cur=cur.next;
+        }
+        cur=head;//回到头结点
+        while(cur!=null){//复制next与random
+            map.get(cur).next=map.get(cur.next);//新链表当前节点cur指向其cur.next
+            map.get(cur).random=map.get(cur.random);
+            cur=cur.next;
+        }
+        return map.get(head);
+        
+    }
+}
+
+七、左旋转字符串
+
+coding:
+class Solution {
+    public String reverseLeftWords(String s, int n) {
+        //return s.substring(n)+s.substring(0,n);
+        //StringBuilder
+        StringBuilder builder=new StringBuilder();
+        for(int i=n;i<s.length();i++) builder.append(s.charAt(i));
+        for(int i=0;i<n;i++) builder.append(s.charAt(i));
+        return builder.toString();
+    }
+}
+
+八、剑指offer 05 替换空格
+
+coding:
+
+class Solution {
+    public String replaceSpace(String s) {
+        StringBuilder res=new StringBuilder();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)==' '){
+                res.append("%20");
+                continue;
+            }
+            res.append(s.charAt(i));
+        }
+        return res.toString();
+    }
+}
