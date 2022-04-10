@@ -251,3 +251,48 @@ class Solution {
         return res.toString();
     }
 }
+
+九、剑指offer 03 数组中重复的数字
+
+coding:
+class Solution {
+    public int findRepeatNumber(int[] nums) {
+        //由于数组长度为n，所有数字均在0-n-1内，因此可以考虑将数字对应数组下标，若重复则有多出来的数字
+        /*
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==i) continue;
+            else if (nums[i]==nums[nums[i]]) return nums[i];
+            while(nums[i]!=i){
+                int temp=nums[i];
+                nums[i]=nums[nums[i]];//注意这里实际上算法有问题，nums[i]数值已调整
+                nums[nums[i]]=temp;//这里并没有做到两坐标下数值交换
+            }
+            
+
+        }
+        return -1;
+        */
+        
+    }
+}
+以上方法超出时间，两层循环O(N2）
+修改为：
+class Solution {
+    public int findRepeatNumber(int[] nums) {
+        //由于数组长度为n，所有数字均在0-n-1内，因此可以考虑将数字对应数组下标，若重复则有多出来的数字
+
+        int i=0;
+        while (i<nums.length){
+            if(nums[i]==i) {
+                i++;
+                continue;
+            }else if(nums[i]==nums[nums[i]]) return nums[i];
+            int temp=nums[i];
+            nums[i]=nums[temp];
+            nums[temp]=temp;
+
+        }
+        return -1;
+      
+    }
+}
