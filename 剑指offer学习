@@ -296,3 +296,41 @@ class Solution {
       
     }
 }
+
+十、剑指offer 53 在排序数组中查找数字
+coding:
+class Solution {
+    public int search(int[] nums, int target) {
+        //两次二分法，以目标数值为界，左边为小于目标数值的左区间，右边为大于目标数值的右区间
+        int i=0;
+        int j=nums.length-1;
+        if(nums.length==0||target<nums[i]||target>nums[j]) return 0;
+        int temp=0;
+        while(i<j){//i==j时停止循环右边界
+            int mid=i+(j-i+1)/2;
+            if(target<nums[mid]){
+                j=mid-1;
+            }else{
+                i=mid;
+            }
+        }
+        if(nums[i]==target){
+            temp=i;
+            i=0;
+            j=nums.length-1;
+        }else {
+            return 0;
+        }
+        while(i<j){//i==j时停止循环左边界
+            int mid=i+(j-i)/2;
+            if(target>nums[mid]){
+                i=mid+1;
+            }else{
+                j=mid;
+            }
+
+        }
+        return temp-j+1;
+
+    }
+}
