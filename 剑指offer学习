@@ -334,3 +334,169 @@ class Solution {
 
     }
 }
+
+十一、剑指offer 53 0-n-1中缺失的数字
+coding:
+class Solution {
+    public int missingNumber(int[] nums) {
+        //一次二分法，以目标数值为界，左边为数组下标与值相等的左区间，右边为数组下标小于目标数值的右区间
+        int i=0;
+        int j=nums.length-1;
+        while(i<=j){//i>j时停止循环
+            int mid=i+(j-i)/2;
+            if(mid==nums[mid]){
+                i=mid+1;
+            }else{
+                j=mid-1;
+            }
+        }
+        
+        return i;
+    }
+}
+
+十二、剑指offer 04 二维数组中的查找
+coding:
+//参考题解的思路，类似二叉搜索树
+class Solution {
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        //以左下角为基准点
+        int line=matrix.length-1;
+        int column=0;
+        while(line>=0&&column<matrix[0].length){//在自己写的过程中将&&写成了||，实际情况只有当两者均满足时才能继续循环
+            if(target>matrix[line][column]){
+                column++;
+            }else if(target<matrix[line][column]){
+                line--;
+            }else{
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+十三、剑指offer 11 旋转数组的最小数字
+coding:
+
+class Solution {
+    public int minArray(int[] numbers) {
+        //二分法，左区间为升序数组，最后一位为原数组最大值，右区间也为升序数组，第一位即为数组最小值
+        if(numbers.length==0) return 0;
+        if(numbers.length==1) return numbers[0];
+
+        int left=0;
+        int len=numbers.length;
+        int right=len-1;
+        while(left<right){//当left=right时跳出循环
+            int mid=left+(right-left)/2;
+            //如果mid>right,说明mid当前在左区间，目标值下标必然大于mid
+            //如果mid>right，说明mid当前在右区间，目标值下标小于等于mid
+            //如果Mid=right，说明数组只有两个数，目标值下标小于等于mid(这里思路有问题，因为数组中存在重复值)
+            if(numbers[mid]>numbers[right]){
+                left=mid+1;
+            }else if(numbers[mid]<numbers[right]){
+                right=mid;
+            }else{
+                right--;//想法很巧妙，缩小搜索区间
+            }
+
+        }
+        return numbers[left];
+
+    }
+}
+
+十四、剑指offer 50 第一个只出现一次的字符
+coding:
+class Solution {
+    public char firstUniqChar(String s) {
+        //利用HashMap记录
+        Map<Character,Boolean>map=new HashMap<>();//自己思维混乱，没想出来，参考题解
+        char [] ch=s.toCharArray();
+        for(int i=0;i<ch.length;i++){
+            map.put(ch[i],!map.containsKey(ch[i]));          
+        }
+        for(int i=0;i<ch.length;i++){
+            if(map.get(ch[i])) return ch[i];
+        }
+        return ' ';
+    }
+}
+
+十五、剑指offer32-1 从上到下打印二叉树
+coding:
+class Solution {
+    public int[] levelOrder(TreeNode root) {
+        if(root==null) return new int[0];
+        LinkedList<TreeNode> list=new LinkedList<>();//利用LinkedList双端队列的特性存储节点，这一步忘记了，查看了参考题解
+        list.add(root);
+        List<Integer> res=new ArrayList<>();//记录结果的列表
+        while(!list.isEmpty()){
+            TreeNode cur=list.poll();
+            res.add(cur.val);
+            if(cur.left!=null) list.add(cur.left);
+            if(cur.right!=null) list.add(cur.right);
+        }
+        int [] out=new int[res.size()];
+        for(int i=0;i<out.length;i++){
+            out[i]=res.get(i);
+        }
+        return out;
+    }
+}
+
+十六、剑指offer32-2，从上到下打印二叉树
+coding:
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root==null) return new ArrayList<>();
+        List<List<Integer>> res=new ArrayList<>();//参考了题解
+        LinkedList<TreeNode> list=new LinkedList<>();
+        list.add(root);
+        while(!list.isEmpty()){
+            List<Integer> temp=new ArrayList<>();//将每行的元素存储在temp中
+            for(int i=list.size();i>0;i--){//初始化循环式i已定，因此循环次数已定，即使因为添加cur.left/right而导致List长度发生了变化
+                TreeNode cur=list.poll();
+                temp.add(cur.val);
+                if(cur.left!=null) list.add(cur.left);
+                if(cur.right!=null) list.add(cur.right);
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+}
+
+十七、剑指offer32-3 从上到下打印二叉树
+coding:
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root==null) return new ArrayList<>();
+        List<List<Integer>> res=new ArrayList<>();
+        LinkedList<TreeNode> list=new LinkedList<>();
+        list.add(root);
+        int flag=0;
+        while(!list.isEmpty()){
+            LinkedList<Integer> temp=new LinkedList<>();//将每行的元素存储在temp中
+            for(int i=list.size();i>0;i--){//初始化循环式i已定，因此循环次数已定，即使因为添加cur.left/right而导致List长度发生了变化
+                if(flag%2==0){
+                    TreeNode cur=list.poll();
+                    temp.addLast(cur.val);
+                    if(cur.left!=null) list.add(cur.left);
+                    if(cur.right!=null) list.add(cur.right);
+                }else{
+                    TreeNode cur=list.poll();
+                    temp.addFirst(cur.val);
+                    if(cur.left!=null) list.add(cur.left);
+                    if(cur.right!=null) list.add(cur.right);
+                }
+                
+            }
+            flag++;
+            res.add(temp);
+        }
+        return res;
+    }
+}
+
