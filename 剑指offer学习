@@ -500,3 +500,41 @@ class Solution {
     }
 }
 
+十八、剑指offer27 二叉树的镜像
+coding:
+class Solution {
+    public TreeNode mirrorTree(TreeNode root) {
+        //自己没有解出来，理解题解后写出
+        //辅助栈法
+        if(root==null) return null;
+        LinkedList<TreeNode> list=new LinkedList<>();
+        list.add(root);
+        while(!list.isEmpty()){//利用栈对二叉树进行遍历，从而交换节点
+            TreeNode cur=list.removeLast();
+            if(cur.left!=null) list.add(cur.left);
+            if(cur.right!=null) list.add(cur.right);
+            TreeNode temp=cur.left;
+            cur.left=cur.right;
+            cur.right=temp;
+        }
+        return root;
+    }
+    
+}
+递归法：
+class Solution {
+    public TreeNode mirrorTree(TreeNode root) {
+        //自己没有解出来，理解题解后写出
+       
+        //递归
+        if(root==null) return null;
+        TreeNode leftNode=mirrorTree(root.left);
+        TreeNode rightNode=mirrorTree(root.right);
+        root.right=leftNode;
+        root.left=rightNode;
+        return root;
+
+    }
+    
+}
+
