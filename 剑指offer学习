@@ -538,3 +538,20 @@ class Solution {
     
 }
 
+十九、剑指offer28 对称的二叉树
+coding:
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        //参考题解递归深度优先算法从上至下
+        if(root==null) return true;
+        return recur(root.left,root.right);
+    }
+    public boolean recur(TreeNode A,TreeNode B){
+        //递归结束条件：如果左右叶子节点均为空，说明同时跳出则返回true
+        //如果其中之一先结束或者左边不等于右边，则返回false
+        if(A==null&&B==null) return true;
+        if(A==null||B==null||A.val!=B.val) return false;
+        return recur(A.left,B.right)&&recur(A.right,B.left);
+
+    }
+}
