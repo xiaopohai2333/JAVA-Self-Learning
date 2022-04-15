@@ -555,3 +555,35 @@ class Solution {
 
     }
 }
+
+二十、剑指offer26 树的子结构
+coding:
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+        if(A==null||B==null) return false;
+        //三种情况：
+        //B节点是A节点的子结构，
+        //B节点是A左节点的子结构
+        //B节点是A右节点的子结构，任意一种成立即返回true
+        if(recur(A,B)||isSubStructure(A.left,B)||isSubStructure(A.right,B)) return true;
+
+        return false;
+    }
+    public boolean recur(TreeNode A,TreeNode B){
+        if(B==null) return true;//如果B遍历结束了，说明前面的递归都为true，没有问题，返回true；
+        if(A==null) return false;//如果A遍历结束了，说明B仍有节点，则为false;
+        if(A.val==B.val){
+            return recur(A.left,B.left)&&recur(A.right,B.right);
+        }else{
+            return false;
+        }
+    }
+}
