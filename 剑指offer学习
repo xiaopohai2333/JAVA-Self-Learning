@@ -660,5 +660,28 @@ class Solution {
         return cur2;
     }
 }
+二十三、剑指offer 52 两个链表的第一个公共节点
+coding:
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null||headB==null) return null;
+        //根据题解参考
+        ListNode A=headA;
+        ListNode B=headB;
+        while(A!=B){
+            if(A!=null) {
+               A=A.next; 
+            }else{
+                A=headB;
+            };
+            if(B!=null) {
+                B=B.next;
+            }else{
+               B=headA; 
+            }
+            
+        }
+        return A;
 
-
+    }
+}
