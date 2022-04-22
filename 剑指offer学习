@@ -719,3 +719,110 @@ class Solution {
 
     }
 }
+
+二十五、剑指offer 21调整数组顺序使奇数位于偶数前面
+coding:
+class Solution {
+    public int[] exchange(int[] nums) {
+        //双指针
+        int left=0;
+        int right=nums.length-1;
+        while(left<right){
+            while(left<right&&nums[left]%2!=0){//注意left<right这个限制条件，可避免越界
+                left++;
+            }
+            while(left<right&&nums[right]%2==0){//注意left<right这个限制条件，可避免越界
+                right--;
+            }
+            int temp=nums[left];
+            nums[left]=nums[right];
+            nums[right]=temp;
+            left++;
+            right--;
+        }
+        return nums;
+    }
+}
+
+二十六、剑指offer 57 和为s的两个数
+coding:
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        //双指针
+        int left=0;
+        int right=nums.length-1;
+        int [] res=new int[2];
+        while(left<right){
+            while(nums[left]+nums[right]>target){
+                right--;
+            }
+            while(nums[left]+nums[right]<target){
+                left++;
+            }
+            if(nums[left]+nums[right]==target){
+                res[0]=nums[left];
+                res[1]=nums[right];
+                return res;
+            } 
+        }
+        return null;
+    }
+}
+
+二十七、剑指offer 58-1 翻转单词顺序
+coding:
+class Solution {
+    public String reverseWords(String s) {
+        s=s.trim();//清除首尾两端的空格
+        //char[] ch=s.toCharArray();
+        StringBuilder res=new StringBuilder();
+        int right=s.length()-1;
+        int i=s.length()-1;
+        while(i>=0){
+            while(i>=0&&s.charAt(i)!=' '){
+                i--; 
+            }
+            res.append(s.substring(i+1,right+1));
+            res.append(' ');
+            while(i>=0&&s.charAt(i)==' '){
+                i--;
+            }
+            right=i;
+        }       
+        return res.toString().trim();
+    }
+}
+
+二十八、剑指offer 61 扑克牌中的顺子
+coding:
+class Solution {
+    public boolean isStraight(int[] nums) {
+        Arrays.sort(nums);
+        int i=0;
+        for(int j=0;j<nums.length;j++){
+            if(nums[j]==0) continue;
+            if(j<nums.length-1&&nums[j]==nums[j+1]) return false;
+        }
+        while(i<nums.length){
+            while(nums[i]==0)i++;
+            if(nums[nums.length-1]-nums[i]<5){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+自己的思路但是两次遍历超时了
+参考题解：
+class Solution {
+    public boolean isStraight(int[] nums) {
+        Arrays.sort(nums);
+        int joker=0;
+        for(int i=0;i<4;i++){
+            if(nums[i]==0) joker++;
+            else if(nums[i]==nums[i+1]) return false;
+        }
+        if(nums[4]-nums[joker]<5) return true;
+        return false;
+    }
+}
