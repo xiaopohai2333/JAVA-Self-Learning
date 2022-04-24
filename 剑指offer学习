@@ -826,3 +826,86 @@ class Solution {
         return false;
     }
 }
+
+二十九、对链表进行插入排序
+coding:
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        ListNode cur=head;
+        ListNode pre=new ListNode(Integer.MIN_VALUE);//头结点的前节点
+        pre.next=head;
+
+        //遍历链表
+        while(cur.next!=null){//因为需要比较cur.next与cur的大小
+            if(cur.val>cur.next.val){
+                ListNode temp=cur.next;//暂存这个较小值
+                cur.next=temp.next;//将cur指向cur.next.next，删除cur.next
+                ListNode firstHead=head;//遍历起始点
+                ListNode preHead=pre;
+                preHead.next=firstHead;
+                if(temp.val<=firstHead.val){
+                    pre.next=temp;
+                    temp.next=firstHead;
+                }
+                while(temp.val>firstHead.val){
+                    firstHead=firstHead.next;
+                    preHead=preHead.next;
+                }
+                preHead.next=temp;
+                temp.next=firstHead;
+            }else{
+                cur=cur.next;
+            }
+            
+        }
+        return pre.next;
+    }
+}
+执行错误，需要调整代码,根据题解调整后：
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head == null){//别忘记判空
+            return head;
+        }
+        ListNode cur=head;
+        ListNode pre=new ListNode(Integer.MIN_VALUE);//头结点的前节点
+        pre.next=head;
+        ListNode curr=cur.next;
+
+        //遍历链表
+        while(curr!=null){//因为需要比较cur.next与cur的大小
+            if(cur.val>curr.val){
+                /*ListNode temp=cur.next;//暂存这个较小值
+                cur.next=temp.next;//将cur指向cur.next.next，删除cur.next
+                ListNode firstHead=head;//遍历起始点
+                ListNode preHead=pre;
+                preHead.next=firstHead;
+                if(temp.val<=firstHead.val){
+                    pre.next=temp;
+                    temp.next=firstHead;
+                }
+                while(temp.val>firstHead.val){
+                    firstHead=firstHead.next;
+                    preHead=preHead.next;
+                }
+                preHead.next=temp;
+                temp.next=firstHead;
+                */
+                ListNode preNode=pre;//要点就在于这个引用
+                while(preNode.next.val<=curr.val){
+                    preNode=preNode.next;
+                }
+                cur.next=curr.next;
+                curr.next=preNode.next;
+                preNode.next=curr;
+            }else{
+                cur=cur.next;
+            }
+            curr=cur.next;
+            
+        }
+        return pre.next;
+    }
+}
+
+
