@@ -161,7 +161,16 @@ public class Solution {
      */
     private void mergeOfTwoSortedArray(int[] nums, int left, int mid, int right, int[] temp) {
         System.arraycopy(nums, left, temp, left, right + 1 - left);
-
+        
+        //个人理解：
+        /*
+        在mergeSort（）方法中，当左右两区间不是自然排序的话，需要进行两区间元素排序
+        基础思想就是复制两区间数组后，遍历数组，如果左边数组的元素小于等于右边数组的元素，则左边数组元素先放回原数组
+        如果左边数组元素大于右边数组元素，则右边数组元素先放回原数组
+        终止条件就是当左边数组指针到达右边数组首位，则原数组后续位置均为右边数组
+        当右边数组指针到达最后一位，则原数组后续位置均为左边数组
+        直到原数组完成遍历
+        */
         int i = left;
         int j = mid + 1;
 
