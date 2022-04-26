@@ -987,3 +987,7 @@ class Solution {
         return;
     }
 }
+
+三十一、数组中的逆序对
+
+
