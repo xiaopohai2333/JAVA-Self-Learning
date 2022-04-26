@@ -989,5 +989,45 @@ class Solution {
 }
 
 三十一、数组中的逆序对
+coding:
 
+class Solution {
+    public int reversePairs(int[] nums) {
+        //归并排序的变化
+        int []temp=new int[nums.length];
+        return merge(nums,0,nums.length-1,temp);
+
+    }
+
+    public int merge(int [] nums,int left,int right,int [] temp){
+        if(left==right) return 0;//递归需要结束条件
+        int mid=(right+left)/2;
+        int res=merge(nums,left,mid,temp)+merge(nums,mid+1,right,temp);
+        int lStart=left;
+        int rStart=mid+1;
+        for (int k = left; k <= right; k++)
+            temp[k] = nums[k];
+        for(int k=left;k<=right;k++){
+            if(lStart==mid+1){
+                nums[k]=temp[rStart];
+                rStart++;
+            }else if(rStart==right+1){
+                nums[k]=temp[lStart];
+                lStart++;
+            }else if(nums[lStart]<=nums[rStart]){
+                nums[k]=temp[lStart];
+                lStart++;
+            }else{
+                
+                nums[k]=temp[rStart];
+                rStart++;
+                res+=mid-lStart+1;
+                
+            }
+        }
+        return res;
+    }
+}
+
+结果执行出错，但没找到原因
 
