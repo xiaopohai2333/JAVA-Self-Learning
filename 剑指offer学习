@@ -1031,3 +1031,46 @@ class Solution {
 
 结果执行出错，但没找到原因
 
+
+三十二、剑指 offer 15 二进制中1的个数
+coding:
+基础薄弱，参考题解学习
+coding 1:
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res=0;
+        while(n!=0){
+            res+=n&1;
+            n>>>=1;
+        }
+        return res;
+    }
+}
+
+coding 2:
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res=0;
+        while(n!=0){
+            res+=1;
+            n=n&(n-1);
+        }
+        return res;
+    }
+}
+n&(n-1)的思路很棒，可以很好的定位1
+另外一个例子：
+三十三、2的幂
+coding:
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return n>0 && (n & (n-1))==0;
+    }
+}
+
+三十四、剑指offer 65 不用加减乘除做加法
+coding:
+基础薄弱，参考题解学习
+
