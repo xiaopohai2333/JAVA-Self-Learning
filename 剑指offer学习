@@ -1073,4 +1073,14 @@ class Solution {
 三十四、剑指offer 65 不用加减乘除做加法
 coding:
 基础薄弱，参考题解学习
-
+coding:
+class Solution {
+    public int add(int a, int b) {
+        while(b!=0){
+            int c=(a&b)<<1;//进位和
+            a=a^b;//无进位和
+            b=c;
+        }
+        return a;
+    }
+}
