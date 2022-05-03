@@ -1084,3 +1084,32 @@ class Solution {
         return a;
     }
 }
+
+三十五、剑指offer 56-I 数组中数字出现的次数
+coding:
+基础薄弱，参考题解学习
+class Solution {
+    public int[] singleNumbers(int[] nums) {
+        //根据题解作答
+        int res=0;
+        for(int num:nums){//遍历数组对所有数字进行异或运算
+            res=res^num;//此时应当为目标两个数字的异或结果
+        }
+        int temp=1;//用于下一步进行与运算将两个数字的异或结果拆分
+        while((temp&res)==0){//注意==优先级高于&需要添加括号保证运算顺序
+            temp<<=1;//当temp&res==1时，表示res此时位置的值为1，说明找到了目标两个数字异或结果从右外左的第一个不同值的位置，不再左移
+        }
+        int a=0;
+        int b=0;
+        for(int num:nums){
+            if((temp&num)==0){//将确定的位置与遍历的数字通过与运算进行分组，因为该位置目标的两个数字的值也不同，可将其分开，两组中各有一个数字，而每组其他的数字均存在两次，再次异或运算后每组均剩下目标数字
+                a=a^num;
+            }else{
+                b=b^num;
+            }
+        }
+        int sum[]=new int[]{a,b};
+        return sum;
+
+    }
+}
