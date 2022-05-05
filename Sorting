@@ -199,3 +199,284 @@ public class Solution {
 时间复杂度：O(Nlog⁡N)，这里 N 是数组的长度；
 空间复杂度：O(N)，辅助数组与输入数组规模相当。
 
+4.快速排序
+基本思路：快速排序每一次都排定一个元素（这个元素呆在了它最终应该呆的位置），然后递归地去排它左边的部分和右边的部分，依次进行下去，直到数组有序；
+
+算法思想：分而治之（分治思想），与「归并排序」不同，「快速排序」在「分」这件事情上不想「归并排序」无脑地一分为二，而是采用了 partition 的方法（书上，和网上都有介绍，就不展开了），因此就没有「合」的过程。
+
+实现细节（注意事项）：（针对特殊测试用例：顺序数组或者逆序数组）一定要随机化选择切分元素（pivot），否则在输入数组是有序数组或者是逆序数组的时候，快速排序会变得非常慢（等同于冒泡排序或者「选择排序」）；
+
+
+coding:
+
+版本 1：基本快速排序：把等于切分元素的所有元素分到了数组的同一侧，可能会造成递归树倾斜；
+版本 2：双指针（指针对撞）快速排序：把等于切分元素的所有元素等概率地分到了数组的两侧，避免了递归树倾斜，递归树相对平衡；
+版本 3：三指针快速排序：把等于切分元素的所有元素挤到了数组的中间，在有很多元素和切分元素相等的情况下，递归区间大大减少。
+
+
+lt 是 less than 的缩写，表示（严格）小于；
+gt 是 greater than 的缩写，表示（严格）大于；
+le 是 less than or equal 的缩写，表示小于等于（本代码没有用到）；
+ge 是 greater than or equal 的缩写，表示大于等于（本代码没有用到）。
+
+
+// 快速排序 1：基本快速排序
+
+import java.util.Random;
+
+public class Solution {
+
+ 
+    /**
+     * 列表大小等于或小于该大小，将优先于 quickSort 使用插入排序
+     */
+    private static final int INSERTION_SORT_THRESHOLD = 7;
+
+    private static final Random RANDOM = new Random();
+
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+        quickSort(nums, 0, len - 1);
+        return nums;
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        // 小区间使用插入排序
+        if (right - left <= INSERTION_SORT_THRESHOLD) {
+            insertionSort(nums, left, right);
+            return;
+        }
+
+        int pIndex = partition(nums, left, right);
+        quickSort(nums, left, pIndex - 1);
+        quickSort(nums, pIndex + 1, right);
+    }
+
+    /**
+     * 对数组 nums 的子区间 [left, right] 使用插入排序
+     *
+     * @param nums  给定数组
+     * @param left  左边界，能取到
+     * @param right 右边界，能取到
+     */
+    private void insertionSort(int[] nums, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            int temp = nums[i];
+            int j = i;
+            while (j > left && nums[j - 1] > temp) {
+                nums[j] = nums[j - 1];
+                j--;
+            }
+            nums[j] = temp;
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        int randomIndex = RANDOM.nextInt(right - left + 1) + left;
+        swap(nums, left, randomIndex);
+
+        // 基准值
+        int pivot = nums[left];
+        int lt = left;
+        // 循环不变量：
+        // all in [left + 1, lt] < pivot
+        // all in [lt + 1, i) >= pivot
+        for (int i = left + 1; i <= right; i++) {
+            if (nums[i] < pivot) {
+                lt++;
+                swap(nums, i, lt);
+            }
+        }
+        swap(nums, left, lt);
+        return lt;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+}
+
+
+// 快速排序 2：双指针（指针对撞）快速排序
+
+import java.util.Random;
+
+public class Solution {
+
+
+    /**
+     * 列表大小等于或小于该大小，将优先于 quickSort 使用插入排序
+     */
+    private static final int INSERTION_SORT_THRESHOLD = 7;
+
+    private static final Random RANDOM = new Random();
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+        quickSort(nums, 0, len - 1);
+        return nums;
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        // 小区间使用插入排序
+        if (right - left <= INSERTION_SORT_THRESHOLD) {
+            insertionSort(nums, left, right);
+            return;
+        }
+
+        int pIndex = partition(nums, left, right);
+        quickSort(nums, left, pIndex - 1);
+        quickSort(nums, pIndex + 1, right);
+    }
+
+    /**
+     * 对数组 nums 的子区间 [left, right] 使用插入排序
+     *
+     * @param nums  给定数组
+     * @param left  左边界，能取到
+     * @param right 右边界，能取到
+     */
+    private void insertionSort(int[] nums, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            int temp = nums[i];
+            int j = i;
+            while (j > left && nums[j - 1] > temp) {
+                nums[j] = nums[j - 1];
+                j--;
+            }
+            nums[j] = temp;
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        int randomIndex = left + RANDOM.nextInt(right - left + 1);
+        swap(nums, randomIndex, left);
+
+        int pivot = nums[left];
+        int lt = left + 1;
+        int gt = right;
+
+        // 循环不变量：
+        // all in [left + 1, lt) <= pivot
+        // all in (gt, right] >= pivot
+        while (true) {
+            while (lt <= right && nums[lt] < pivot) {
+                lt++;
+            }
+
+            while (gt > left && nums[gt] > pivot) {
+                gt--;
+            }
+
+            if (lt >= gt) {
+                break;
+            }
+
+            // 细节：相等的元素通过交换，等概率分到数组的两边
+            swap(nums, lt, gt);
+            lt++;
+            gt--;
+        }
+        swap(nums, left, gt);
+        return gt;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+}
+
+
+// 快速排序 3：三指针快速排序
+
+
+import java.util.Random;
+
+public class Solution {
+
+    /**
+     * 列表大小等于或小于该大小，将优先于 quickSort 使用插入排序
+     */
+    private static final int INSERTION_SORT_THRESHOLD = 7;
+
+    private static final Random RANDOM = new Random();
+
+    public int[] sortArray(int[] nums) {
+        int len = nums.length;
+        quickSort(nums, 0, len - 1);
+        return nums;
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        // 小区间使用插入排序
+        if (right - left <= INSERTION_SORT_THRESHOLD) {
+            insertionSort(nums, left, right);
+            return;
+        }
+
+        int randomIndex = left + RANDOM.nextInt(right - left + 1);
+        swap(nums, randomIndex, left);
+
+        // 循环不变量：
+        // all in [left + 1, lt] < pivot
+        // all in [lt + 1, i) = pivot
+        // all in [gt, right] > pivot
+        int pivot = nums[left];
+        int lt = left;
+        int gt = right + 1;
+
+        int i = left + 1;
+        while (i < gt) {
+            if (nums[i] < pivot) {
+                lt++;
+                swap(nums, i, lt);
+                i++;
+            } else if (nums[i] == pivot) {
+                i++;
+            } else {
+                gt--;
+                swap(nums, i, gt);
+            }
+        }
+        swap(nums, left, lt);
+        // 注意这里，大大减少了两侧分治的区间
+        quickSort(nums, left, lt - 1);
+        quickSort(nums, gt, right);
+    }
+
+    /**
+     * 对数组 nums 的子区间 [left, right] 使用插入排序
+     *
+     * @param nums  给定数组
+     * @param left  左边界，能取到
+     * @param right 右边界，能取到
+     */
+    private void insertionSort(int[] nums, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            int temp = nums[i];
+            int j = i;
+            while (j > left && nums[j - 1] > temp) {
+                nums[j] = nums[j - 1];
+                j--;
+            }
+            nums[j] = temp;
+        }
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+}
+
+
+时间复杂度：O(Nlog⁡N)，这里 N 是数组的长度；
+空间复杂度：O(log⁡N)，这里占用的空间主要来自递归函数的栈空间。
+
+
