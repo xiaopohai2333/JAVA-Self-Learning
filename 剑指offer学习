@@ -1113,3 +1113,56 @@ class Solution {
 
     }
 }
+
+三十六、215.数组中的第K个最大元素
+coding:
+快速排序学习
+
+import java.util.Random;
+class Solution {
+    private static Random random = new Random(System.currentTimeMillis());
+    public int findKthLargest(int[] nums, int k) {
+        int len=nums.length;
+        int left=0;
+        int right=len-1;
+        
+        //开始循环缩减区间
+        while(true){
+            int index=partition(nums,left,right);
+            if(index>len-k){
+                right=index-1;
+            }else if(index<len-k){
+                left=index+1;
+            }else{
+                return nums[index];
+            }
+        }
+    }
+    //封装转换方法
+    public void swap(int []nums,int left,int right){
+        int temp=nums[left];
+        nums[left]=nums[right];
+        nums[right]=temp;
+    }
+    //减治方法
+    public int partition(int []nums,int left,int right){
+        if(right>left){
+            int index1=left+1+random.nextInt(right-left);
+            swap(nums,left,index1);
+        }
+        int refer=nums[left];
+        int j=left;
+        for(int i=left+1;i<=right;i++){
+            if(nums[i]<refer){
+                j++;
+                swap(nums,i,j);
+            }
+        }
+        //循环是保证数组区间[left+1,j]值都小于refer,[j+1,i]值都大于等于refer
+        //下面代码则使得区间[left,j-1]值都小于refer,j的值refer,[j,right]的值大于等于refer
+        swap(nums,left,j);
+        return j;
+
+    }
+}
+
