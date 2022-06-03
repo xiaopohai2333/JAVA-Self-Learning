@@ -1241,3 +1241,42 @@ class Solution {
         return res.next;
     }
 }
+
+三十九、无重复字符的最长子串
+
+coding:
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character,Integer> map=new HashMap<>();
+        int res=0;
+        int left=0;
+        for(int i=0;i<s.length();i++){
+            while(map.containsKey(s.charAt(i))){
+                map.remove(s.charAt(left));
+                left++;
+            }
+            map.put(s.charAt(i),i);
+            res=Math.max(res,i-left+1);
+        }
+        return res;
+    }
+}
+查看题解，修改了一行代码节约了2s
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character,Integer> map=new HashMap<>();
+        int res=0;
+        int left=0;
+        for(int i=0;i<s.length();i++){
+            if(map.containsKey(s.charAt(i))){
+                left=Math.max(left,map.get(s.charAt(i))+1);
+            }
+            map.put(s.charAt(i),i);
+            res=Math.max(res,i-left+1);
+        }
+        return res;
+    }
+}
+
+
+
