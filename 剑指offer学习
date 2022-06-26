@@ -1320,4 +1320,69 @@ class Solution {
 
 }
 
+四十一、接雨水
+
+coding:
+class Solution {
+   public int trap(int[] height) {
+        //按照每列来查看
+        int sum=0;
+        int leftHeight[]=new int[height.length];
+        int rightHeight[]=new int[height.length];
+        //获取左边最大列
+        for(int j=1;j<height.length-1;j++){
+            leftHeight[j]=Math.max(leftHeight[j-1],height[j-1]);
+        }
+        //获取右边最大列
+        for(int j=height.length-2;j>=0;j--){
+            rightHeight[j]=Math.max(rightHeight[j+1],height[j+1]);
+        }
+        for(int i=1;i<height.length-1;i++){
+            int min=Math.min(leftHeight[i],rightHeight[i]);
+            if(height[i]<min){
+                sum+=min-height[i];
+            }
+        }
+
+        return sum;
+    }
+}
+
+四十二、最长回文子串
+
+coding:
+class Solution {
+    public String longestPalindrome(String s) {
+        //基础解法，动态规划
+        int len=s.length();
+        if(len<2) return s;
+        char [] temp=s.toCharArray();
+        int maxLen=1;
+        int begin=0;
+        //定义状态方程
+        boolean [][] status=new boolean[len][len];
+        //初始化状态方程
+        for(int i=0;i<len;i++){
+            status[i][i]=true;
+        }
+
+        //开始遍历
+        for(int j=1;j<len;j++){
+            for(int i=0;i<j;i++){
+                if(temp[i]!=temp[j]) status[i][j]=false;
+                else if(j-i<3) status[i][j]=true;
+                else status[i][j]=status[i+1][j-1];
+
+                if(status[i][j]&&j-i+1>maxLen){
+                    maxLen=j-i+1;
+                    begin=i;
+                }
+            }
+        }
+
+        return s.substring(begin,begin+maxLen);
+    }
+}
+
+
 
