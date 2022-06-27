@@ -1444,5 +1444,34 @@ class Solution {
 四十五、括号生成
 
 coding:
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        //深度优先算法
+        List<String> res=new ArrayList<>();
+        if(n==0){
+            return res;
+        }
+        //左括号及右括号还剩多少个的思路
+        dfs("",n,n,res);
+        return res;
 
+    }
+
+    public void dfs(String src,int left,int right,List<String> res){
+        if(left==0&&right==0){
+            res.add(src);
+            return;
+        }
+        if(left>right){//由于先生成左括号（有效的），那么剩余右括号应该始终大于左括号的剩余数量，如果小于，则需要剪枝返回
+            return;
+        }
+        if(left>0){
+            dfs(src+"(",left-1,right,res);
+        }
+        if(right>0){
+            dfs(src+")",left,right-1,res);
+        }
+
+    }
+}
 
