@@ -1384,5 +1384,61 @@ class Solution {
     }
 }
 
+四十三、三数之和
+
+coding:
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        //List<Integer> temp=new ArrayList<>();
+        List<List<Integer>> res=new ArrayList<>();
+        if(nums.length<3) return res;
+        Arrays.sort(nums);
+        for(int start=0;start<nums.length-2;start++){
+            if(nums[start]>0) break;
+            if(start>0&&nums[start]==nums[start-1]) continue;
+            int left=start+1,right=nums.length-1;
+            while(left<right){
+                int sum=nums[start]+nums[left]+nums[right];
+                if(sum<0){
+                    while(left<right&&nums[left]==nums[++left]);
+                }else if(sum>0){
+                    while(left<right&&nums[right]==nums[--right]);
+                }else{
+                    //res.add(new ArrayList<Integer>(Arrays.asList(nums[start], nums[left], nums[right])));
+                    List<Integer> temp=new ArrayList<>();
+                    temp.add(nums[start]);
+                    temp.add(nums[left]);
+                    temp.add(nums[right]);
+                    res.add(temp);
+                    //temp.clear();
+                    while(left<right&&nums[left]==nums[++left]);
+                    while(left<right&&nums[right]==nums[--right]);
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+
+四十四、爬楼梯
+
+coding:
+
+class Solution {
+    public int climbStairs(int n) {
+        //动态规划
+        int [] dp=new int [n+1];
+        if(n<=2) return n;
+        dp[1]=1;
+        dp[2]=2;
+        for(int i=3;i<=n;i++){
+            dp[i]=dp[i-1]+dp[i-2];
+        }
+        
+        return dp[n];
+    }
+}
 
 
