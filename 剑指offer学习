@@ -1475,3 +1475,62 @@ class Solution {
     }
 }
 
+四十六、有效的括号
+coding:
+class Solution {
+    public boolean isValid(String s) {
+        //使用栈
+        //利用hashMap存储括号
+        if(s.length()==0){
+            return false;
+        }
+        Map<Character,Character> map=new HashMap<>();
+        map.put(')','(');
+        map.put(']','[');
+        map.put('}','{');
+        Stack<Character> stack=new Stack<>();
+        char[] temp=s.toCharArray();
+        for(int i=0;i<temp.length;i++){
+            if(map.containsKey(temp[i])){
+                char topElement=stack.empty()?'!':stack.pop();
+                if(topElement!=map.get(temp[i])){//如果括号没有正常闭合
+                    return false;
+                }
+            }else{
+                stack.push(temp[i]);//将右括号放入栈中
+            }
+        }
+        return stack.empty();
+
+    }
+}
+
+四十七、数组中的第K个最大元素
+
+coding:
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int len=nums.length;
+        Arrays.sort(nums);
+        return nums[len-k];
+    }
+}
+
+coding:
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        //小顶堆
+        PriorityQueue<Integer> queue=new PriorityQueue<>();
+        for(int i=0;i<nums.length;i++){
+            queue.add(nums[i]);
+            if(queue.size()>k){
+                queue.poll();
+            }
+        }
+        return queue.peek();
+    }
+}
+
+
+
+
