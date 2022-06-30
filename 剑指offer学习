@@ -1384,6 +1384,43 @@ class Solution {
     }
 }
 
+coding:
+//中心扩散
+public class Solution {
+    public String longestPalindrome(String s) {
+       int len=s.length();
+       if(len<2) return s;
+       
+       int maxLen=1;
+       int begin=0;
+       
+       for(int i=0;i<len-1;i++){
+            int oddLen=centroSymmetric(s,i,i);
+            int evenLen=centroSymmetric(s,i,i+1);
+            int curLen=Math.max(oddLen,evenLen);
+            if(curLen>maxLen){
+                maxLen=curLen;
+                begin=i-(maxLen-1)/2;
+            }
+            
+       }
+       return s.substring(begin,begin+maxLen);
+       
+
+    }
+
+    public int centroSymmetric(String s,int left,int right){
+        while(left>=0&&right<s.length()&&s.charAt(left)==s.charAt(right)){
+            --left;
+            ++right;
+        }
+        return right-1-left;
+
+    }
+
+
+}
+
 四十三、三数之和
 
 coding:
@@ -1530,6 +1567,86 @@ class Solution {
         return queue.peek();
     }
 }
+
+四十八、括号生成
+coding:
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        //深度优先算法
+        List<String> res=new ArrayList<>();
+        if(n==0){
+            return res;
+        }
+        //左括号及右括号还剩多少个的思路
+        dfs("",n,n,res);
+        return res;
+
+    }
+
+    public void dfs(String src,int left,int right,List<String> res){
+        if(left==0&&right==0){
+            res.add(src);
+            return;
+        }
+        if(left>right){//由于先生成左括号（有效的），那么剩余右括号应该始终大于左括号的剩余数量，如果小于，则需要剪枝返回
+            return;
+        }
+        if(left>0){
+            dfs(src+"(",left-1,right,res);
+        }
+        if(right>0){
+            dfs(src+")",left,right-1,res);
+        }
+
+    }
+}
+
+四十九、LRU缓存
+这里放一个很好的算法学习网站
+https://labuladong.gitee.io/algo/1/3/
+coding:
+class LRUCache {
+    int cap;//缓存最大值
+    LinkedHashMap<Integer,Integer> map=new LinkedHashMap<>();//利用LinkedHashMap实现
+
+    public LRUCache(int capacity) {
+        this.cap=capacity;
+    }
+    
+    public int get(int key) {
+        if(!map.containsKey(key)) return -1;
+        makeRecently(key);
+        return map.get(key);
+
+    }
+    
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            map.put(key,value);
+            makeRecently(key);
+            return;
+        }
+        if(map.size()>=cap){
+            int deleteKey=map.keySet().iterator().next();
+            map.remove(deleteKey);
+        }
+        map.put(key,value);
+    }
+
+    public void makeRecently(int key){
+        int val=map.get(key);
+        map.remove(key);
+        map.put(key,val);
+    }
+
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
 
 
 
