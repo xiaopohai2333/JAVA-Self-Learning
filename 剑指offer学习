@@ -1668,4 +1668,33 @@ class Solution {
     }
 }
 
+五十一、合并区间
+coding:
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a,int[] b){
+                if(a[0]==b[0]){
+                    return a[1]-b[1];
+                }else{
+                    return a[0]-b[0];
+                }
+            }
+        });
+        //Arrays.sort(intervals,(a,b)->(a[0]-b[0]));
+        int [][] res=new int [intervals.length][2];
+        int index=-1;
+        for(int[] num:intervals){
+            if(index==-1||num[0]>res[index][1]){//如果遍历的一维数组首位大于结果数组最近的一维数组的末尾
+                res[++index]=num;
+            }else{//如果遍历的一维数组首位小于结果数组最近的一维数组的末尾，则将结果数组最近一维数组的末位取遍历数组末尾与当前末尾的较大者
+                res[index][1]=Math.max(num[1], res[index][1]);
+            }
+        }
+        return Arrays.copyOf(res,index+1);
+
+
+    }
+}
 
