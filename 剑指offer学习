@@ -1711,6 +1711,39 @@ class Solution {
         return true;
     }
 }
+五十三、插入区间
+coding:
 
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        int [][] res=new int [intervals.length+1][2];
+        if(intervals.length==0){
+            res[0]=newInterval;
+            return res;
+        }
+        int i=0;
+        int index=0;
+        //1.当newInterval[0]大于数组[1]时，将数组直接添加至res
+        //2.当newInterval[0]大于等于数组[0]但小于等于数组[1]时，需要拼接合并数组
+        //3.当newInterval数组全部放入res中时，后续intervals的数组全部放入res中
+    
+            while(i<intervals.length&&newInterval[0]>intervals[i][1]){
+                res[index++]=intervals[i++];
+            }
+            while(i<intervals.length&&newInterval[1]>=intervals[i][0]){
+                //题解这里改造newInterval数组
+                newInterval[0]=Math.min(intervals[i][0],newInterval[0]);
+                newInterval[1]=Math.max(intervals[i][1],newInterval[1]);
+                i++;
+            }
+            res[index++]=newInterval;
+            while(i<intervals.length){
+                res[index++]=intervals[i++];
+            }
+            
+    
+        return Arrays.copyOf(res,index);
+    }
+}
 
 
