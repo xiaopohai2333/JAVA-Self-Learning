@@ -1839,4 +1839,32 @@ class Solution {
     }
 }
 
+五十七、分隔链表
+coding:
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        //创建两个链表，一个存储小于x的数，另一个存储大于等于x的数
+        ListNode list1=new ListNode(0);
+        ListNode list2=new ListNode(0);
+        ListNode p1=list1;
+        ListNode p2=list2;
+        ListNode cur=head;
+        while(cur!=null){//循环遍历
+            if(cur.val>=x){
+                p1.next=cur;
+                p1=p1.next;
+            }else{
+                p2.next=cur;
+                p2=p2.next;
+            }
+            ListNode temp=cur.next;
+            cur.next=null;//遍历过程中将cur的指针拆掉
+            cur=temp;
+        }
+        p2.next=list1.next;//将存储较小数的链表指向存储较大数的链表
+        return list2.next;
+    }
+}
+
+
 
