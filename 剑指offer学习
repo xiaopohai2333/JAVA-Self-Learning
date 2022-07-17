@@ -1866,5 +1866,94 @@ class Solution {
     }
 }
 
+五十八、删除链表的倒数第N个结点
+coding:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(n==0) return head;
+        ListNode p1=head;
+        ListNode p2=head;
+        for(int i=0;i<n;i++){
+            p1=p1.next;
+        }
+        while(p1.next!=null){
+            p1=p1.next;
+            p2=p2.next;
+        }
+        ListNode temp=p2.next.next;
+        p2.next=temp;
+        p2.next.next=null;
+        return head;
+    }
+}
+上述自己写的，会报空指针
+
+coding:
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode res=new ListNode(-1);
+        res.next=head;
+        ListNode temp=fromEnd(res,n+1);
+        temp.next=temp.next.next;
+        return res.next;
+    }
+    public ListNode fromEnd(ListNode p,int k){
+        ListNode p1=p;
+        ListNode p2=p;
+        for(int i=0;i<k;i++){
+            p1=p1.next;
+        }
+        while(p1!=null){
+            p1=p1.next;
+            p2=p2.next;
+        }
+        return p2;
+    }
+}
+
+五十九、链表中倒数第k个节点
+
+coding:
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        
+        ListNode p1=head;
+        for(int i=0;i<k;i++){
+            p1=p1.next;
+        }
+        ListNode p2=head;
+        while(p1!=null){
+            p1=p1.next;
+            p2=p2.next;
+        }
+        return p2;
+        
+    }
+}
+
+
+六十、链表的中间结点
+
+coding:
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode p1=head,p2=head;
+        while(p1!=null&&p1.next!=null){
+            p2=p2.next;
+            p1=p1.next.next;
+        }
+        return p2;
+    }
+}
 
 
