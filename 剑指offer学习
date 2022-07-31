@@ -2037,4 +2037,40 @@ class Solution {
     }
 }
 
+六十三、爱吃香蕉的珂珂
+
+coding:
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int left=1;
+        int right=1000000000;
+        while(left<=right){
+            int mid=left+(right-left)/2;
+            if(f(piles,mid)==h){
+                right=mid-1;
+            }else if(f(piles,mid)>h){
+                left=mid+1;
+            }else if(f(piles,mid)<h){
+                right=mid-1;
+            }
+        }
+        return left;
+    }
+
+    public int f(int [] piles,int k){
+        int hour =0;
+        for(int i=0;i<piles.length;i++){
+            hour+=piles[i]/k;
+            //如果没有除尽，那么需要补上1小时将剩余的香蕉吃完
+            if(piles[i]%k!=0){
+                hour++;
+            }
+        }
+        return hour;
+    }
+}
+
+代码还差2测试用例没通过
+
 
