@@ -2236,6 +2236,106 @@ class Solution {
     }
 }
 
+六十七、四数之和
 
+coding:
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        return nSum(nums, (long)target, 4, 0);
+    }
+
+    List<List<Integer>> nSum(int[] nums, long target, int n, int start) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (n < 2 || nums.length < n) {
+            return res;
+        }
+
+        if (n == 2) {
+            int left = start, right = nums.length - 1;
+            while (left < right) {
+                int leftVal = nums[left];
+                int rightVal = nums[right];
+                long sum = leftVal + rightVal;
+                if (sum < target) {
+                    while (left < right && nums[left] == leftVal) left++;
+                } else if (sum > target) {
+                    while (left < right && nums[right] == rightVal) right--;
+                } else if (sum == target) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[left]);
+                    list.add(nums[right]);
+                    res.add(list);
+
+                    while (left < right && nums[left] == leftVal)  left++;
+                    while (left < right && nums[right] == rightVal) right--;
+                }
+            }
+        } else {
+            for (int i = start; i < nums.length; ++i) {
+                List<List<Integer>> lists = nSum(nums, target - nums[i], n - 1, i + 1);
+                for (List<Integer> list : lists) {
+                    list.add(nums[i]);
+                    res.add(list);
+                }
+
+                while (i < nums.length - 1 && nums[i] == nums[i + 1]) {
+                    i++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+
+六十八、最小覆盖子串
+coding:
+
+class Solution {
+    public String minWindow(String s, String t) {
+        Map<Character,Integer> window=new HashMap<>();
+        Map<Character,Integer> need=new HashMap<>();
+        for(int i=0;i<t.length();i++){
+            need.put(t.charAt(i),need.getOrDefault(t.charAt(i),0)+1);
+        }
+        int left=0;
+        int right=0;
+        int start=0;//起始索引
+        int len=Integer.MAX_VALUE;
+        int valid=0;
+        //目前滑动窗口中不包含元素(左闭右开)
+        while(right<s.length()){
+            char temp=s.charAt(right);
+            right++;
+            if(need.containsKey(temp)){
+                window.put(temp,window.getOrDefault(temp,0)+1);
+                if(window.get(temp).equals(need.get(temp))){//判断need中所有元素是否放置在window中，包括重复的元素
+                    valid++;
+                }
+            }
+            while(valid==need.size()){
+                //此时更新索引和窗口
+                if(right-left<len){
+                    start=left;
+                    len=right-left;
+                }
+                char tem=s.charAt(left);
+                left++;//开始缩小窗口
+                if(need.containsKey(tem)){
+                    if(window.get(tem).equals(need.get(tem))){
+                        valid--;
+                        
+                    }
+                    window.put(tem,window.get(tem)-1);
+                }
+            }
+        }
+        return len==Integer.MAX_VALUE? "":s.substring(start,start+len) ;
+
+    }
+}
 
 
