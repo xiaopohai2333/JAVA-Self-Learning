@@ -2338,4 +2338,90 @@ class Solution {
     }
 }
 
+六十九、字符的排列
+
+coding:
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        //滑动窗口 
+        Map<Character,Integer> window=new HashMap<>();
+        Map<Character,Integer> need=new HashMap<>();
+        int left=0;
+        int right=0;
+        int valid=0;
+        for(int i=0;i<s1.length();i++){
+            need.put(s1.charAt(i),need.getOrDefault(s1.charAt(i),0)+1);
+        }
+        while(right<s2.length()){
+            char temp=s2.charAt(right);
+            right++;
+            if(need.containsKey(temp)){
+                window.put(temp,window.getOrDefault(temp,0)+1);
+                if(need.get(temp).equals(window.get(temp))){
+                    valid++;
+                }
+            }
+            while(right-left>=s1.length()){
+                if(valid==need.size()){
+                    return true;
+                }
+                //缩小区间
+                char tem=s2.charAt(left);   
+                left++;
+                if(need.containsKey(tem)){
+                    if(need.get(tem).equals(window.get(tem))){
+                        valid--;
+                    }
+                }
+                window.put(tem,window.getOrDefault(tem,0)-1);
+            }
+        }
+        return false;
+
+    }
+}
+
+七十、找到字符串中所有字母异位词
+
+coding:
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        //滑动窗口 
+        Map<Character,Integer> window=new HashMap<>();
+        Map<Character,Integer> need=new HashMap<>();
+        List<Integer> res=new ArrayList<>();
+        int left=0;
+        int right=0;
+        int valid=0;
+        for(int i=0;i<p.length();i++){
+            need.put(p.charAt(i),need.getOrDefault(p.charAt(i),0)+1);
+        }
+        while(right<s.length()){
+            char temp=s.charAt(right);
+            right++;
+            if(need.containsKey(temp)){
+                window.put(temp,window.getOrDefault(temp,0)+1);
+                if(need.get(temp).equals(window.get(temp))){
+                    valid++;
+                }
+            }
+            while(right-left>=p.length()){
+                if(valid==need.size()){
+                    res.add(left);
+                }
+                //缩小区间
+                char tem=s.charAt(left);   
+                left++;
+                if(need.containsKey(tem)){
+                    if(need.get(tem).equals(window.get(tem))){
+                        valid--;
+                    }
+                }
+                window.put(tem,window.getOrDefault(tem,0)-1);
+            }
+        }
+        return res;
+
+    }
+}
 
