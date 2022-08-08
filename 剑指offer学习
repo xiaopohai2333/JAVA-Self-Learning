@@ -2425,3 +2425,37 @@ class Solution {
     }
 }
 
+七十一、无重复字符的最长子串
+
+coding:
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        // Map<Character,Integer> map=new HashMap<>();
+        // int res=0;
+        // int left=0;
+        // for(int i=0;i<s.length();i++){
+        //     if(map.containsKey(s.charAt(i))){
+        //         left=Math.max(left,map.get(s.charAt(i))+1);
+        //     }
+        //     map.put(s.charAt(i),i);
+        //     res=Math.max(res,i-left+1);
+        // }
+        // return res;
+        Map<Character,Integer> map=new HashMap<>();
+        int res=0;
+        int left=0;
+        int right=0;
+        while(right<s.length()){
+            char temp=s.charAt(right);
+            right++;
+            map.put(temp,map.getOrDefault(temp,0)+1);
+            while(map.get(temp)>1){
+                char tem=s.charAt(left);
+                left++;
+                map.put(tem,map.getOrDefault(tem,0)-1);
+            }
+            res=Math.max(res,right-left);
+        }
+        return res;
+    }
+}
