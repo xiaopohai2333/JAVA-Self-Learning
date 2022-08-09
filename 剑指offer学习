@@ -2459,3 +2459,56 @@ class Solution {
         return res;
     }
 }
+
+七十二、删除有序数组中的重复项
+
+coding:
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int len=nums.length;
+        int slow=0;
+        int fast=0;
+        if(len==0) return 0;
+        while(fast<len){
+            if(nums[fast]!=nums[slow]){
+                slow++;
+                nums[slow]=nums[fast];
+            }
+            fast++;
+        }
+        return slow+1;
+    }
+}
+
+七十三、删除排序链表的重复元素
+
+coding:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head==null) return null;
+        ListNode slow =head;
+        ListNode fast =head;
+        while(fast!=null){
+            if(fast.val!=slow.val){
+                slow.next=fast;
+                slow=slow.next;
+            }
+            fast=fast.next;
+        }
+        slow.next=null;
+        return head;
+    }
+}
+
+
+
