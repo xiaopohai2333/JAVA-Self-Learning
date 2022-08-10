@@ -2510,5 +2510,49 @@ class Solution {
     }
 }
 
+七十四、移除元素
+coding:
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int left=0;
+        int right=0;
+        int len=nums.length;
+        while(right<len){
+            if(nums[right]!=val){
+                nums[left]=nums[right];
+                left++;
+            }
+            right++;
+        }
+        return left;
+    }
+}
+
+七十五、移动零
+coding:
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int num=removeNum(nums,0);
+        for(;num<nums.length;num++){
+            nums[num]=0;
+        }
+    }
+    public int removeNum(int[] nums,int num){
+        int len=nums.length;
+        int left=0;
+        int right=0;
+        while(right<len){
+            if(nums[right]!=num){
+                nums[left]=nums[right];
+                left++;
+            }
+            right++;
+        }
+        return left;
+    }
+}
+
+
+
 
 
