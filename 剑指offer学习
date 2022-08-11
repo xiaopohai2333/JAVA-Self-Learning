@@ -2552,6 +2552,89 @@ class Solution {
     }
 }
 
+七十六、反转字符串
+
+coding:
+class Solution {
+    public void reverseString(char[] s) {
+        int len=s.length;
+        int left=0;
+        int right=len-1;
+        while(left<right){
+            char temp=s[left];
+            s[left]=s[right];
+            s[right]=temp;
+            left++;
+            right--;
+        }
+
+    }
+}
+
+七十七、最长回文子串 
+coding:
+
+public class Solution {
+    public String longestPalindrome(String s) {
+       int len=s.length();
+       if(len<2) return s;
+       
+       int maxLen=1;
+       int begin=0;
+       
+       for(int i=0;i<len-1;i++){
+            int oddLen=centroSymmetric(s,i,i);
+            int evenLen=centroSymmetric(s,i,i+1);
+            int curLen=Math.max(oddLen,evenLen);
+            if(curLen>maxLen){
+                maxLen=curLen;
+                begin=i-(maxLen-1)/2;
+            }
+            
+       }
+       return s.substring(begin,begin+maxLen);
+       
+
+    }
+
+    public int centroSymmetric(String s,int left,int right){
+        while(left>=0&&right<s.length()&&s.charAt(left)==s.charAt(right)){
+            --left;
+            ++right;
+        }
+        return right-1-left;
+
+    }
+
+}
+
+coding:
+public class Solution {
+    public String longestPalindrome(String s) {
+       int len=s.length();
+       if(len<2) return s;
+       
+       String res=" ";
+       for(int i=0;i<len;i++){
+           String s1=centroSymmetric(s,i,i);
+           String s2=centroSymmetric(s,i,i+1);
+           res=res.length()>s1.length()?res:s1;
+           res=res.length()>s2.length()?res:s2;
+       }
+       return  res;
+       
+
+    }
+
+    public String centroSymmetric(String s,int left,int right){
+        while(left>=0&&right<s.length()&&s.charAt(left)==s.charAt(right)){
+            --left;
+            ++right;
+        }
+        return s.substring(left+1,right);
+    }
+}
+
 
 
 
