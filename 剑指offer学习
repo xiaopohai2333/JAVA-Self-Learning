@@ -2653,5 +2653,61 @@ class NumArray {
     }
 }
 
+七十九、区间加法
+coding:
+class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        int []res=new int[length];
+        int m=updates.length;
+        if(m==0){
+            return  res;
+        }
+        for(int i=0;i<m;i++){
+            int a=updates[i][0];
+            int b=updates[i][1];
+            int val=updates[i][2];
+            res[a]+=val;
+            if(b+1<length){
+                res[b+1]-=val;
+            }
+        }
+        int change=0;
+        for(int i=0;i<length;i++){
+            change+=res[i];
+            res[i]=change;
+        }
+        return res;  
+    }
+}
+
+八十、航班预定统计
+
+coding:
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int [] res=new int[n];
+        int l=bookings.length;//行 
+        int c=bookings[0].length;//列
+        for(int i=0;i<l;i++){
+            int a=bookings[i][0];
+            int b=bookings[i][1];
+            int val=bookings[i][2];
+            res[a-1]+=val;
+            if(b<n){
+                res[b]-=val;
+            }
+        }
+        int change=0;
+        for(int i=0;i<n;i++){
+            change+=res[i];
+            res[i]=change;
+        }
+        return res;
+    }
+}
+
+
+
+
 
 
